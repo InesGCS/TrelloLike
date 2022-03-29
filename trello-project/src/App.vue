@@ -1,32 +1,13 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link>|
-    <router-link to="/about">About</router-link>
-
-    <!-- import listManager  -->
-  </nav>
-  <router-view />
+<ListManager>This is the first view</ListManager>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import ListManager from './components/ListManager.vue'
 
-nav {
-  padding: 30px;
+export default {
+  components: {
+    ListManager
+  }
 }
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+</script>
