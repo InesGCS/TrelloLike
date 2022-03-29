@@ -1,19 +1,4 @@
 <template>
-<<<<<<< HEAD
- <!-- import CardManager -->
- <h1>I'm the list Manager !</h1>
-<CardManager></CardManager>
-</template>
-
-<script>
-import CardManager from './CardManager.vue'
-export default {
-  components: {
-    CardManager
-  }
-}
-</script>
-=======
 <div>
   <CardManager></CardManager>
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
@@ -153,4 +138,3 @@ form {
 }
 
 </style>
->>>>>>> 517c38677f3818d99e8362dccf100fc66b396e4b
