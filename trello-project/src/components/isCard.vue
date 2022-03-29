@@ -1,0 +1,3 @@
+<template>
+    <!-- import commentManager -->
+</template>

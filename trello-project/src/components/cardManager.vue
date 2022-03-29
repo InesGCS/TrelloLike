@@ -1,0 +1,3 @@
+<template>
+    <!-- import iscard -->
+</template>
