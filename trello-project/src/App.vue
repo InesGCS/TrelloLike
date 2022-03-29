@@ -1,13 +1,18 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
 
-    <!-- import listManager  -->
-    
-      </nav>
-  <router-view/>
+<ListManager></ListManager>
+</div>
 </template>
+
+<script>
+import ListManager from './components/ListManager.vue'
+export default {
+  components: {
+    ListManager
+  }
+}
+</script>
 
 <style>
 #app {
