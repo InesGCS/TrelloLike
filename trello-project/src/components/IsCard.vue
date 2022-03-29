@@ -1,3 +1,3 @@
 <template>
-<div> HELLO </div>
+    <!-- import commentManager -->
 </template>

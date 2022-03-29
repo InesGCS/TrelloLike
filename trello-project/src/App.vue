@@ -1,12 +1,17 @@
 <template>
+<<<<<<< HEAD
   <div>
 
 <ListManager></ListManager>
 </div>
+=======
+<ListManager>This is the first view</ListManager>
+>>>>>>> 517c38677f3818d99e8362dccf100fc66b396e4b
 </template>
 
 <script>
 import ListManager from './components/ListManager.vue'
+<<<<<<< HEAD
 export default {
   components: {
     ListManager
@@ -31,8 +36,12 @@ nav a {
   font-weight: bold;
   color: #2c3e50;
 }
+=======
+>>>>>>> 517c38677f3818d99e8362dccf100fc66b396e4b
 
-nav a.router-link-exact-active {
-  color: #42b983;
+export default {
+  components: {
+    ListManager
+  }
 }
-</style>
+</script>

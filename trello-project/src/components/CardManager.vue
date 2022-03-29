@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
 <div id="cardManager">
 <h2>I'm the card Manager !</h2>
 {{ cards }}
@@ -44,3 +45,7 @@ wp.posts().create({
   content: 'BLABLABLA'
 })
 </script>
+=======
+    <h1>I am from CardManager</h1>
+</template>
+>>>>>>> 517c38677f3818d99e8362dccf100fc66b396e4b
