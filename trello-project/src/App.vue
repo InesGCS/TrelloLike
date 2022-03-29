@@ -4,8 +4,7 @@
     <router-link to="/about">About</router-link>
 
     <!-- import listManager  -->
-    
-      </nav>
+  </nav>
   <router-view/>
 </template>
 
