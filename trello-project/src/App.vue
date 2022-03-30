@@ -1,5 +1,8 @@
 <template>
+  <div>
+
 <ListManager>This is the first view</ListManager>
+</div>
 </template>
 
 <script>
