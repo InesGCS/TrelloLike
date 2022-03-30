@@ -14,33 +14,34 @@ export default {
   },
   data: () => {
     return ({
-      array: wp,
       cards: ['']
+    })
+  },
+  mounted () {
+    const WPAPI = require('wpapi/superagent')
+    const wp = new WPAPI({
+      endpoint: 'http://localhost/wordpress/index.php/wp-json',
+      username: 'hyris',
+      password: 'hyris2022'
+    })
+
+    wp.posts().get()
+      .then(function (data) {
+      // do something with the returned cards
+        console.log(data)
+        this.cards = data
+        console.log(this.cards)
+        return this.cards
+      })
+      .catch(function (err) {
+      // handle error
+        console.log(err)
+      })
+
+    wp.posts().create({
+      title: 'mon titre blablabla',
+      content: 'BLABLABLA'
     })
   }
 }
-const WPAPI = require('wpapi/superagent')
-const wp = new WPAPI({
-  endpoint: 'http://localhost/wordpress/index.php/wp-json',
-  username: 'hyris',
-  password: 'hyris2022'
-})
-
-wp.posts().get()
-  .then(function (data) {
-    // do something with the returned cards
-    console.log(data)
-    this.cards = data
-    console.log(this.cards)
-    return this.cards
-  })
-  .catch(function (err) {
-    // handle error
-    console.log(err)
-  })
-
-wp.posts().create({
-  title: 'mon titre blablabla',
-  content: 'BLABLABLA'
-})
 </script>

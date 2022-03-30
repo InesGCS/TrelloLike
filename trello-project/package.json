@@ -16,12 +16,8 @@
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "vuex": "^4.0.0",
-<<<<<<< HEAD
     "webpack": "^5.70.0",
     "wpapi": "^2.0.0-alpha.1"
-=======
-    "wpapi": "^1.2.2"
->>>>>>> 517c38677f3818d99e8362dccf100fc66b396e4b
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
