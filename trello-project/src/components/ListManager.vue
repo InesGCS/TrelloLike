@@ -12,7 +12,7 @@
     :key='list.id'
   >
 
-  <CardManager list="list"></CardManager>
+  <CardManager :list="list"></CardManager>
     <p class='unselectable'>{{ list.name }}</p>
     <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
   </div>
@@ -34,11 +34,11 @@ export default {
   },
   methods: {
     wpapiSetting () {
-      const WPAPI = require('wpapi')
+      const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       return wp
     },

@@ -7,10 +7,7 @@
       <button class='addCardButton' @click="addCard">Add card</button>
       <button class='cancelAddButton'>X</button>
   </form>
-  <!-- <div v-if="list.id == cards.categories[0]"> -->
-    <!-- {{list[1].id}} -->
-<IsCard class="Card" v-for="card in cards" card="card" :key="card.id"></IsCard>
-<!-- </div> -->
+  <IsCard class="Card" v-for="card in cards" :card="card" :key="card.id"></IsCard>
 </div>
 </template>
 
@@ -55,10 +52,7 @@ export default {
 
     wp.posts().get()
       .then((data) => {
-        console.log('cards is ', data)
-        this.cards = data
-        this.cards = data
-        console.log('this cards is : ', data)
+        this.cards = data.filter((card) => card.categories.includes(this.list.id))
       })
       .catch(function (err) {
       // handle error

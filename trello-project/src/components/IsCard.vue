@@ -1,10 +1,6 @@
 <template>
 <div id="isCard">
-<!-- <p class="cardTitle">
-    {{ card.title.rendered }}
-</p> -->
-    <!-- <p v-html="card.content.rendered"></p> -->
-    <!-- {{ card.content.rendered }} -->
+    <p v-html="card.content.rendered"></p>
 </div>
 </template>
 
