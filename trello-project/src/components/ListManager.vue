@@ -14,6 +14,7 @@
     :key='list.id'
   >
     <p class='unselectable'>{{ list.name }}</p>
+    <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
   </div>
 </div>
 </template>
@@ -32,69 +33,49 @@ export default {
     }
   },
   methods: {
+    wpapiSetting () {
+      const WPAPI = require('wpapi')
+      const wp = new WPAPI({
+        endpoint: 'http://localhost/wordpress/index.php/wp-json/',
+        username: 'LiChun',
+        password: 'Qwer@1226'
+      })
+      return wp
+    },
     ShowAddListForm () {
       this.addListForm = true
     },
     CancelAddListForm () {
       this.addListForm = false
     },
-    // getMaxListId () {
-    //   const keys = Object.keys(localStorage)
-    //   let i = keys.length
-    //   let max = 0
-    //   while (i--) {
-    //     const listId = parseInt(keys[i])
-    //     if (Number.isInteger(listId) && listId > max) {
-    //       max = listId
-    //     }
-    //   }
-    //   return (max)
-    // },
     addList () {
-      const newId = this.getMaxListId() + 1
-      const newList = {
-        id: newId,
-        listTitle: this.newTitle
-      }
-      // localStorage.setItem(newId, JSON.stringify(newList))
-      this.lists.push(newList)
+      this.wpapiSetting().categories().create({
+        name: this.newTitle,
+        status: 'publish'
+      })
+        .then((response) => {
+          console.log(response.id)
+          this.lists.push(response)
+        })
       this.newTitle = ''
       this.newList = ''
       this.addListForm = false
+    },
+    removePost (list) {
+      console.log('what is this ', list)
+      this.wpapiSetting().categories().id(list).param('force', true).delete()
+        .then((response) => {
+          console.log('in side response')
+          console.log(response)
+          this.lists = [...this.lists.filter((element) => element.id !== list)]
+        })
     }
-    // storeList () {
-    //   const keys = Object.keys(localStorage)
-    //   let i = keys.length
-    //   while (i--) {
-    //     this.lists.push(JSON.parse(localStorage.getItem(keys[i])))
-    //   }
-    // }
   },
   async mounted () {
-    // this.storeList()
-    const WPAPI = require('wpapi')
-    const wp = new WPAPI({
-      endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-      username: 'LiChun',
-      password: 'Qwer@1226'
-    })
-    const categories = await wp.categories().get()
+    const categories = await this.wpapiSetting().categories().get()
     console.log(categories)
     console.log(categories[0].id)
     this.lists = categories
-    // for (let i = 0; i < categories.length; i++) {
-    //   this.lists.push(categories[i].name)
-    // }
-    // this.CatId = data[0].id
-    // console.log('in wp categories ' + this.CatId)
-    // return this.CatId
-    // wp.categories().create({
-    //   name: this.newTitle,
-    //   status: 'publish'
-    // })
-    //   .then(function (response) {
-    //     console.log(response.id)
-    //   })
   }
 }
 </script>
