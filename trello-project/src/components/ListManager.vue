@@ -1,18 +1,18 @@
 <template>
-<div>
-  <CardManager></CardManager>
+<div id="listManager">
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
   <form @submit.prevent='addList' v-else>
       <input class='listTitle' v-model='newTitle' placeholder='Enter list title...' />
       <button class='addButton'>Add list</button>
       <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
   </form>
-
   <div
     class='lists'
     v-for='list in lists'
     :key='list.id'
   >
+
+  <CardManager list="list"></CardManager>
     <p class='unselectable'>{{ list.name }}</p>
   </div>
 </div>
@@ -75,12 +75,13 @@ export default {
     const WPAPI = require('wpapi')
     const wp = new WPAPI({
       endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-      username: 'LiChun',
-      password: 'Qwer@1226'
+      username: 'hyris',
+      password: 'hyris2022'
     })
+
     const categories = await wp.categories().get()
     console.log(categories)
-    console.log(categories[0].id)
+    // console.log(categories[0].id)
     this.lists = categories
     // for (let i = 0; i < categories.length; i++) {
     //   this.lists.push(categories[i].name)
@@ -100,7 +101,9 @@ export default {
 </script>
 
 <style >
-
+#listManager {
+  background-color: #99eeee;
+}
 .addListButton {
     width: 200px;
     font-size: 15px;
