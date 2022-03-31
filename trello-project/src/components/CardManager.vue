@@ -32,8 +32,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       wp.posts().create({
         content: this.newContent
@@ -46,8 +46,8 @@ export default {
     const WPAPI = require('wpapi/superagent')
     const wp = new WPAPI({
       endpoint: 'http://localhost/wordpress/index.php/wp-json',
-      username: 'hyris',
-      password: 'hyris2022'
+      username: 'LiChun',
+      password: 'Qwer@1226'
     })
 
     wp.posts().get()

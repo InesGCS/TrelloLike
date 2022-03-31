@@ -13,8 +13,9 @@
   >
 
   <CardManager :list="list"></CardManager>
-    <p class='unselectable'>{{ list.name }}</p>
-    <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
+    <p class='unselectable' contenteditable
+    @input="onInput">{{list.name}}</p>
+    <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
   </div>
 </div>
 </template>
@@ -37,8 +38,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       return wp
     },
@@ -61,7 +62,7 @@ export default {
       this.newList = ''
       this.addListForm = false
     },
-    removePost (list) {
+    removeList (list) {
       console.log('what is this ', list)
       this.wpapiSetting().categories().id(list).param('force', true).delete()
         .then((response) => {
@@ -69,8 +70,30 @@ export default {
           console.log(response)
           this.lists = [...this.lists.filter((element) => element.id !== list)]
         })
+    },
+    onInput (e) {
+      console.log(e.target.innerText)
+    },
+    updateList (list) {
+      console.log('inside updateList function')
+      this.wpapiSetting().categories().id(list).update({
+        name: list.name,
+        status: 'publish'
+      })
+        .then((response) => {
+          console.log(response)
+        })
     }
   },
+  // watch: {
+  //   lists: {
+  //     handler (newValue) {
+  //       console.log('colors changed', newValue)
+  //       this.updateList(newValue.id)
+  //     },
+  //     deep: true
+  //   }
+  // },
   async mounted () {
     const categories = await this.wpapiSetting().categories().get()
     console.log(categories)
@@ -119,5 +142,11 @@ form {
   background: transparent;
   border: none;
 }
+
+/* textarea {
+  width: 230px;
+  background-color: transparent;
+  border: none;
+} */
 
 </style>
