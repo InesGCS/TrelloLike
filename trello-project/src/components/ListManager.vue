@@ -1,7 +1,7 @@
 <template>
 <div id="listManager">
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
-  <form @submit.prevent='addList' v-else>
+  <form class="addList" @submit.prevent='addList' v-else>
       <input class='listTitle' v-model='newTitle' placeholder='Enter list title...' />
       <button class='addButton'>Add list</button>
       <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
@@ -11,8 +11,16 @@
     v-for='list in lists'
     :key='list.id'
   >
-
-    <p class='unselectable'>{{ list.name }}</p>
+    <!-- <div v-click-outside="updateList(list)"> -->
+    <!-- <p class='unselectable' contenteditable
+    @input="onInput">{{ list.name }}</p> -->
+    <!-- <textarea class='unselectable' v-model="list.name"></textarea> -->
+    <p class='unselectable' @click="ShowEditListForm()" v-if="editListForm === false">{{ list.name }}</p>
+    <form @submit.prevent='updateList(list)' v-else>
+      <input class='listTitle' v-model='list.name' />
+      <button class='editConfirmButton'>Confirm</button>
+      <button class='cancelEditButton' @click="CancelEditListForm()">X</button>
+    </form>
     <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
   <CardManager :list="list" :cards="cards"></CardManager>
   <br>
@@ -32,10 +40,11 @@ export default {
   data () {
     return {
       addListForm: false,
+      editListForm: false,
       lists: [],
       CatId: 0,
-      cards: []
-
+      cards: [],
+      value: ''
     }
   },
   methods: {
@@ -53,6 +62,12 @@ export default {
     },
     CancelAddListForm () {
       this.addListForm = false
+    },
+    ShowEditListForm () {
+      this.editListForm = true
+    },
+    CancelEditListForm () {
+      this.editListForm = false
     },
     addList () {
       this.wpapiSetting().categories().create({
@@ -88,18 +103,17 @@ export default {
           // this.cards = [...this.cards]
         })
     },
-    onInput (e) {
-      console.log(e.target.innerText)
-    },
+    // onInput (e) {
+    //   console.log(e.target.innerText)
+    //   return e.target.innerText
+    //   // loose focus
+    // },
     updateList (list) {
-      console.log('inside updateList function')
-      this.wpapiSetting().categories().id(list).update({
+      this.wpapiSetting().categories().id(list.id).update({
         name: list.name,
         status: 'publish'
       })
-        .then((response) => {
-          console.log(response)
-        })
+      this.editListForm = false
     }
   },
   // async mounted () {
@@ -115,21 +129,14 @@ export default {
   //   console.log('card is : ', this.card)
   //   // this.cards = posts.filter((card) => card.categories.includes(this.list.id))
   // },
-
   mounted () {
-    const WPAPI = require('wpapi/superagent')
-    const wp = new WPAPI({
-      endpoint: 'http://localhost/wordpress/index.php/wp-json',
-      username: 'hyris',
-      password: 'hyris2022'
-    })
-    wp.categories().get()
+    this.wpapiSetting().categories().get()
       .then((lists) => {
         this.lists = lists
         // for (let i = 0; i < data.length; i++) {
         //   this.list.id = data[i].id
         // }
-        wp.posts().get()
+        this.wpapiSetting().posts().get()
           .then((cards) => {
             console.log('my data here is ', cards)
             this.cards = cards
@@ -158,7 +165,7 @@ export default {
     background: transparent;
 }
 
-form {
+.addList {
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
