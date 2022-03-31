@@ -12,9 +12,13 @@
     :key='list.id'
   >
 
-  <CardManager :list="list"></CardManager>
     <p class='unselectable'>{{ list.name }}</p>
     <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
+  <CardManager :list="list" :cards="cards"></CardManager>
+  <br>
+  ======================================================
+  <br>
+
   </div>
 </div>
 </template>
@@ -29,7 +33,9 @@ export default {
     return {
       addListForm: false,
       lists: [],
-      CatId: 0
+      CatId: 0,
+      cards: []
+
     }
   },
   methods: {
@@ -68,14 +74,63 @@ export default {
           console.log('in side response')
           console.log(response)
           this.lists = [...this.lists.filter((element) => element.id !== list)]
+          this.wpapiSetting().posts().get()
+            .then((cards) => {
+              console.log('my data here is ', cards)
+              this.cards = cards
+              console.log('cards.get is ', this.cards)
+            })
+            .catch(function (err) {
+            // handle error
+              console.error('posts get ', err)
+            })
+          console.log('cards is ', this.cards)
+          // this.cards = [...this.cards]
         })
     }
   },
-  async mounted () {
-    const categories = await this.wpapiSetting().categories().get()
-    console.log(categories)
-    // console.log(categories[0].id)
-    this.lists = categories
+  // async mounted () {
+  //   const categories = await this.wpapiSetting().categories().get()
+  //   const posts = await this.wpapiSetting().posts().get()
+  //   console.log('categories is : ', categories)
+  //   console.log('post is : ', posts)
+  //   // console.log(categories[0].id)
+  //   this.lists = categories
+  //   this.cards = posts
+  //   console.log('lists is : ', this.lists)
+  //   console.log('cards is : ', this.cards)
+  //   console.log('card is : ', this.card)
+  //   // this.cards = posts.filter((card) => card.categories.includes(this.list.id))
+  // },
+
+  mounted () {
+    const WPAPI = require('wpapi/superagent')
+    const wp = new WPAPI({
+      endpoint: 'http://localhost/wordpress/index.php/wp-json',
+      username: 'hyris',
+      password: 'hyris2022'
+    })
+    wp.categories().get()
+      .then((lists) => {
+        this.lists = lists
+        // for (let i = 0; i < data.length; i++) {
+        //   this.list.id = data[i].id
+        // }
+        wp.posts().get()
+          .then((cards) => {
+            console.log('my data here is ', cards)
+            this.cards = cards
+            console.log('cards.get is ', this.cards)
+          })
+          .catch(function (err) {
+          // handle error
+            console.error('posts get ', err)
+          })
+      })
+      .catch(function (err) {
+      // handle error
+        console.error('categories get ', err)
+      })
   }
 }
 </script>

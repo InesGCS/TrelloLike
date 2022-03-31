@@ -7,22 +7,37 @@
       <button class='addCardButton' @click="addCard">Add card</button>
       <button class='cancelAddButton'>X</button>
   </form>
-  <IsCard class="Card" v-for="card in cards" :card="card" :key="card.id"></IsCard>
+  <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"></IsCard>
 </div>
 </template>
 
 <script>
 import IsCard from './IsCard.vue'
 export default {
-  props: ['list'],
-  components: {
-    IsCard
-  },
+  props: ['list', 'cards'],
   data: () => {
     return ({
-      cards: [],
-      addCardForm: false
+      // cards: [],
+      addCardForm: false,
+      cardsFiltered: []
     })
+  },
+  watch: {
+    cards: function (newVal, oldVal) {
+      if (this.list !== null && newVal !== null) {
+        console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+        this.cardsFiltered = newVal.filter((card) => card.categories.includes(this.list.id))
+      }
+    },
+    list: function (newVal, oldVal) {
+      if (this.cards !== null && newVal !== null) {
+        console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+        this.cardsFiltered = this.cards.filter((card) => card.categories.includes(newVal.id))
+      }
+    }
+  },
+  components: {
+    IsCard
   },
   methods: {
     changeAddCardForm () {
@@ -41,29 +56,8 @@ export default {
         console.log(response.id)
       })
     }
-  },
-  mounted () {
-    const WPAPI = require('wpapi/superagent')
-    const wp = new WPAPI({
-      endpoint: 'http://localhost/wordpress/index.php/wp-json',
-      username: 'hyris',
-      password: 'hyris2022'
-    })
-
-    wp.posts().get()
-      .then((data) => {
-        this.cards = data.filter((card) => card.categories.includes(this.list.id))
-      })
-      .catch(function (err) {
-      // handle error
-        console.log(err)
-      })
-
-    wp.posts().create({
-      title: 'mon titre blablabla',
-      content: 'BLABLABLA'
-    })
   }
+
 }
 </script>
 
