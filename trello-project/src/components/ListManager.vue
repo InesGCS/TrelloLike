@@ -1,13 +1,17 @@
 <template>
-<div id="listManager">
+<div>
+  <div class='addList'>
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
   <form class="addList" @submit.prevent='addList' v-else>
       <input class='listTitle' v-model='newTitle' placeholder='Enter list title...' />
       <button class='addButton'>Add list</button>
       <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
   </form>
+  </div>
+<section class='hero'>
+  <div id="listManager" class='columns'>
   <div
-    class='lists'
+    class='column'
     v-for='list in lists'
     :key='list.id'
   >
@@ -21,13 +25,15 @@
       <button class='editConfirmButton'>Confirm</button>
       <button class='cancelEditButton' @click="CancelEditListForm()">X</button>
     </form>
-    <button id='deleteButton' class='unselectable' @click='removePost(list.id)'>X</button>
+    <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
   <CardManager :list="list" :cards="cards"></CardManager>
   <br>
   ======================================================
   <br>
 
   </div>
+</div>
+</section>
 </div>
 </template>
 
@@ -156,8 +162,18 @@ export default {
 </script>
 
 <style >
+/* .hero {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100vh;
+} */
+.addList {
+  grid-row: 1 / 2;
+}
 #listManager {
+  grid-row: 2 / -1;
   background-color: #99eeee;
+  overflow-x: scroll;
 }
 .addListButton {
     width: 200px;
