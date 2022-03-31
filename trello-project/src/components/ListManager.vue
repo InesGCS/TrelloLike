@@ -43,8 +43,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       return wp
     },
@@ -67,7 +67,7 @@ export default {
       this.newList = ''
       this.addListForm = false
     },
-    removePost (list) {
+    removeList (list) {
       console.log('what is this ', list)
       this.wpapiSetting().categories().id(list).param('force', true).delete()
         .then((response) => {
@@ -86,6 +86,19 @@ export default {
             })
           console.log('cards is ', this.cards)
           // this.cards = [...this.cards]
+        })
+    },
+    onInput (e) {
+      console.log(e.target.innerText)
+    },
+    updateList (list) {
+      console.log('inside updateList function')
+      this.wpapiSetting().categories().id(list).update({
+        name: list.name,
+        status: 'publish'
+      })
+        .then((response) => {
+          console.log(response)
         })
     }
   },
@@ -174,5 +187,11 @@ form {
   background: transparent;
   border: none;
 }
+
+/* textarea {
+  width: 230px;
+  background-color: transparent;
+  border: none;
+} */
 
 </style>
