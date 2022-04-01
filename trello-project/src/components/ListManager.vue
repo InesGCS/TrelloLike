@@ -132,7 +132,7 @@ export default {
     // },
     // ==================== CARDS METHODS =====================
     addCard (newContent, listId) {
-      console.log(newContent)
+      console.log('my newContent is ', newContent)
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
@@ -148,13 +148,13 @@ export default {
         this.cards.push(response)
         wp.posts().get()
           .then((cards) => {
-            // console.log('my data here is ', cards)
+            console.log('my data here 1 is ', cards)
             this.cards = cards
 
             // console.log('cards.get is ', this.cards)
           })
           .catch(function (err) {
-          // handle error
+            // handle error
             console.error('posts get ', err)
           })
 
@@ -171,7 +171,7 @@ export default {
         // }
         this.wpapiSetting().posts().get()
           .then((cards) => {
-            // console.log('my data here is ', cards)
+            console.log('my data here 2 is ', cards)
             this.cards = cards
             // console.log('cards.get is ', this.cards)
           })
@@ -186,6 +186,7 @@ export default {
       })
   }
 }
+
 </script>
 
 <style >

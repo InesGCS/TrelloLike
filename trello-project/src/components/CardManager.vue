@@ -4,7 +4,7 @@
 <button class='addCardButton' v-if="addCardForm === false" @click="changeAddCardForm" >+ Add another card</button>
   <form v-else @submit.prevent>
       <input class='cardContent' v-model="newContent" placeholder='Enter new content...' />
-      <button class='addCardButton' @click="changeAddCardForm(); $emit('addCard', newContent, listId)">Add card</button>
+      <button class='addCardButton' @click="$emit('addCard', newContent, listId); changeAddCardForm()">Add card</button>
       <button class='cancelAddButton' @click="changeAddCardForm">X</button>
   </form>
   <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"></IsCard>
@@ -44,7 +44,7 @@ export default {
   methods: {
     changeAddCardForm () {
       this.addCardForm = !this.addCardForm
-      console.log(this.addCardForm)
+      this.newContent = ''
     }
   }
 
