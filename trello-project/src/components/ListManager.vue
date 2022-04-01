@@ -26,7 +26,7 @@
       <button class='cancelEditButton' @click="CancelEditListForm()">X</button>
     </form>
     <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
-  <CardManager :list="list" :cards="cards"></CardManager>
+  <CardManager :list="list" :cards="cards" @addCard="addCard" v-model="newContent" v-model:listId="listId"></CardManager>
   <br>
   ======================================================
   <br>
@@ -50,19 +50,23 @@ export default {
       lists: [],
       CatId: 0,
       cards: [],
-      value: ''
+      value: '',
+      newContent: '',
+      newCards: []
     }
   },
   methods: {
+    // =================== WORDPRESS CONNEXION ==================
     wpapiSetting () {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       return wp
     },
+    // ================== LISTS METHODS ========================
     ShowAddListForm () {
       this.addListForm = true
     },
@@ -97,9 +101,9 @@ export default {
           this.lists = [...this.lists.filter((element) => element.id !== list)]
           this.wpapiSetting().posts().get()
             .then((cards) => {
-              console.log('my data here is ', cards)
+              // console.log('my data here is ', cards)
               this.cards = cards
-              console.log('cards.get is ', this.cards)
+              // console.log('cards.get is ', this.cards)
             })
             .catch(function (err) {
             // handle error
@@ -119,22 +123,46 @@ export default {
         name: list.name,
         status: 'publish'
       })
-      this.editListForm = false
+              this.editListForm = false
     }
   },
-  // async mounted () {
-  //   const categories = await this.wpapiSetting().categories().get()
-  //   const posts = await this.wpapiSetting().posts().get()
-  //   console.log('categories is : ', categories)
-  //   console.log('post is : ', posts)
-  //   // console.log(categories[0].id)
-  //   this.lists = categories
-  //   this.cards = posts
-  //   console.log('lists is : ', this.lists)
-  //   console.log('cards is : ', this.cards)
-  //   console.log('card is : ', this.card)
-  //   // this.cards = posts.filter((card) => card.categories.includes(this.list.id))
-  // },
+    //     .then((response) => {
+    //       console.log(response)
+    //     })
+    // },
+    // ==================== CARDS METHODS =====================
+    addCard (newContent, listId) {
+      console.log(newContent)
+      const WPAPI = require('wpapi/superagent')
+      const wp = new WPAPI({
+        endpoint: 'http://localhost/wordpress/index.php/wp-json',
+        username: 'hyris',
+        password: 'hyris2022'
+      })
+      wp.posts().create({
+        content: newContent,
+        categories: listId,
+        status: 'publish'
+      }).then((response) => {
+        console.log(response)
+        this.cards.push(response)
+        wp.posts().get()
+          .then((cards) => {
+            console.log('my data here is ', cards)
+            this.cards = cards
+
+            // console.log('cards.get is ', this.cards)
+          })
+          .catch(function (err) {
+          // handle error
+            console.error('posts get ', err)
+          })
+
+        // this.cards = [...]
+      })
+    }
+  },
+
   mounted () {
     this.wpapiSetting().categories().get()
       .then((lists) => {
@@ -146,7 +174,7 @@ export default {
           .then((cards) => {
             console.log('my data here is ', cards)
             this.cards = cards
-            console.log('cards.get is ', this.cards)
+            // console.log('cards.get is ', this.cards)
           })
           .catch(function (err) {
           // handle error
