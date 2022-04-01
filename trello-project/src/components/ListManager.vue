@@ -1,5 +1,5 @@
 <template>
-<div='listManager'>
+<!-- <div='listManager'> -->
   <div class='addList'>
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
   <form class="addList" @submit.prevent='addList' v-else>
@@ -33,7 +33,7 @@
   </div>
   </div>
 </section>
-</div>
+<!-- </div> -->
 </template>
 
 <script>
@@ -60,8 +60,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       return wp
     },
@@ -133,8 +133,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       wp.posts().create({
         content: newContent,
@@ -182,6 +182,19 @@ export default {
         content: '<p>' + updateContent + '</p>',
         status: 'publish'
       })
+        .then((response) => {
+          console.log('in side response')
+          console.log('response is ', response)
+          this.cards = [...this.cards.filter((element) => element.id !== cardId)]
+          this.wpapiSetting().posts().perPage(100).get()
+            .then((cards) => {
+              this.cards = cards
+            })
+            .catch(function (err) {
+              console.error('posts get ', err)
+            })
+          // console.log('cards is ', this.cards)
+        })
     }
   },
   //  ================================================================
