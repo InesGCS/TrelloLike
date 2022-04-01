@@ -46,9 +46,6 @@ export default {
     changeAddCardForm () {
       this.addCardForm = !this.addCardForm
       this.newContent = ''
-    },
-    test (cardId) {
-      console.log('my cardId in cardManager is ', cardId)
     }
   }
 

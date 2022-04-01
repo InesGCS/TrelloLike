@@ -8,7 +8,7 @@
           <button class='addButton'>Add comment</button>
           <button class='cancelAddButton' @click="CancelAddCommentForm()">X</button>
         </form>
-        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment>
+        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id" @updateComment="updateComment" :newContent="newContent"></IsComment>
         <button class="popUp-close" @click="TogglePopUp('buttonTrigger')">
             close
         </button>
@@ -35,8 +35,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       return wp
     },
@@ -73,6 +73,12 @@ export default {
               this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
             })
         })
+    },
+    updateComment (newContent, commentId) {
+      this.wpapiSetting().comments().id(commentId).update({
+        content: newContent,
+        status: 'publish'
+      })
     }
   },
   mounted () {

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div='listManager'>
   <div class='addList'>
   <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
   <form class="addList" @submit.prevent='addList' v-else>
@@ -29,13 +29,10 @@
   <CardManager :list="list" :cards="cards"
   @addCard="addCard" v-model="newContent" v-model:listId="listId"
   @delete-card="deleteCard" v-model:cardId="cardId"
+  @edit-card="editCard" v-model:updateContent="updateContent"
   ></CardManager>
-  <br>
-  ======================================================
-  <br>
-
   </div>
-</div>
+  </div>
 </section>
 </div>
 </template>
@@ -64,8 +61,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       return wp
     },
@@ -139,8 +136,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       wp.posts().create({
         content: newContent,
@@ -180,6 +177,14 @@ export default {
             })
           // console.log('cards is ', this.cards)
         })
+    },
+    editCard (updateContent, cardId) {
+      console.log('updateContent is ', updateContent)
+      console.log('cardId is ', cardId)
+      this.wpapiSetting().posts().id(cardId).update({
+        content: '<p>' + updateContent + '</p>',
+        status: 'publish'
+      })
     }
   },
   //  ================================================================
@@ -232,7 +237,7 @@ export default {
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
-  width: 200px;
+  width: 100%;
   height: 70px;
   padding: 2px;
   gap: 5px;
