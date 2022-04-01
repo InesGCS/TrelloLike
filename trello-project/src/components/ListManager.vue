@@ -23,7 +23,6 @@
     <form @submit.prevent='updateList(list)' v-else>
       <input class='listTitle' v-model='list.name' />
       <button class='editConfirmButton'>Confirm</button>
-      <button class='cancelEditButton' @click="CancelEditListForm()">X</button>
     </form>
     <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
   <CardManager :list="list" :cards="cards" @addCard="addCard" v-model="newContent" v-model:listId="listId"></CardManager>
@@ -76,9 +75,6 @@ export default {
     },
     ShowEditListForm () {
       this.editListForm = true
-    },
-    CancelEditListForm () {
-      this.editListForm = false
     },
     addList () {
       this.wpapiSetting().categories().create({
@@ -133,6 +129,7 @@ export default {
     // ==================== CARDS METHODS =====================
     addCard (newContent, listId) {
       console.log('my newContent is ', newContent)
+      console.log('my listId is ', listId)
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',

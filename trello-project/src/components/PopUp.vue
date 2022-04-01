@@ -8,7 +8,10 @@
           <button class='addButton'>Add comment</button>
           <button class='cancelAddButton' @click="CancelAddCommentForm()">X</button>
         </form>
-        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment>
+        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment"
+        @removeComment="removeComment" v-model="commentId" @updateComment="updateComment"
+        :newContent="newContent" :key="comment.id"></IsComment>
+        <!-- <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment> -->
         <button class="popUp-close" @click="TogglePopUp('buttonTrigger')">
             close
         </button>
@@ -53,18 +56,18 @@ export default {
         content: this.newComment,
         post: cardId,
         status: 'publish'
+      }).then((response) => {
+        // console.log(response.id)
+        this.commentsFiltered.push(response)
       })
-        .then((response) => {
-          // console.log(response.id)
-          this.commentsFiltered.push(response)
-        })
       this.newComment = ''
       this.addCommentForm = false
     },
     removeComment (commentId) {
+      console.log('comment ID is ', commentId)
       this.wpapiSetting().comments().id(commentId).param('force', true).delete()
         .then((response) => {
-          this.wpapiSetting().comments().get()
+          this.wpapiSetting().comments().perPage(100).get()
             .then((comments) => {
               // console.log('comments are ', comments)
               this.comments = comments
@@ -73,10 +76,36 @@ export default {
               this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
             })
         })
+    },
+    updateComment (newContent, commentId) {
+      // const cardId = this.card.id
+      console.log('in the update comment function comment content is ', newContent)
+      console.log('in the update comment function comment id is ', commentId)
+      this.wpapiSetting().comments().id(commentId).update({
+        content: newContent,
+        // post: cardId,
+        status: 'publish'
+      })
+        .then((response) => {
+          this.wpapiSetting().comments().perPage(100).get()
+            .then((comments) => {
+              // console.log('comments are ', comments)
+              this.comments = comments
+              // console.log('this comment is changed to ', this.comments)
+              // console.log('this card id is ', this.card.id)
+              this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
+            })
+        })
+      // .then((response) => {
+      //   console.log(response)
+      // }).catch(error => {
+      //   console.log('here is in the catch error')
+      //   console.log(error)
+      // })
     }
   },
   mounted () {
-    this.wpapiSetting().comments().get()
+    this.wpapiSetting().comments().perPage(100).get()
       .then((comments) => {
         console.log('comments are ', comments)
         this.comments = comments
