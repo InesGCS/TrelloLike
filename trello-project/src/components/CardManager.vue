@@ -2,10 +2,10 @@
 <div id="cardManager">
 <h2>I'm the card Manager !</h2>
 <button class='addCardButton' v-if="addCardForm === false" @click="changeAddCardForm" >+ Add another card</button>
-  <form v-else>
+  <form v-else @submit.prevent>
       <input class='cardContent' v-model="newContent" placeholder='Enter new content...' />
-      <button class='addCardButton' @click="addCard">Add card</button>
-      <button class='cancelAddButton'>X</button>
+      <button class='addCardButton' @click="changeAddCardForm(); $emit('addCard', newContent, listId)">Add card</button>
+      <button class='cancelAddButton' @click="changeAddCardForm">X</button>
   </form>
   <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"></IsCard>
 </div>
@@ -15,23 +15,25 @@
 import IsCard from './IsCard.vue'
 export default {
   props: ['list', 'cards'],
-  data: () => {
-    return ({
-      // cards: [],
+  data () {
+    return {
       addCardForm: false,
-      cardsFiltered: []
-    })
+      cardsFiltered: [],
+      newContent: '',
+      listId: this.list.id
+    }
   },
   watch: {
     cards: function (newVal, oldVal) {
       if (this.list !== null && newVal !== null) {
-        console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+        // console.log('this cards is ', this.cards)
+        // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
         this.cardsFiltered = newVal.filter((card) => card.categories.includes(this.list.id))
       }
     },
     list: function (newVal, oldVal) {
       if (this.cards !== null && newVal !== null) {
-        console.log('Prop changed: ', newVal, ' | was: ', oldVal)
+        // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
         this.cardsFiltered = this.cards.filter((card) => card.categories.includes(newVal.id))
       }
     }
@@ -42,19 +44,7 @@ export default {
   methods: {
     changeAddCardForm () {
       this.addCardForm = !this.addCardForm
-    },
-    addCard: () => {
-      const WPAPI = require('wpapi/superagent')
-      const wp = new WPAPI({
-        endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'LiChun',
-        password: 'Qwer@1226'
-      })
-      wp.posts().create({
-        content: this.newContent
-      }).then(function (response) {
-        console.log(response.id)
-      })
+      console.log(this.addCardForm)
     }
   }
 
