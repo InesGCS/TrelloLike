@@ -7,7 +7,8 @@
       <button class='addCardButton' @click="$emit('addCard', newContent, listId); changeAddCardForm()">Add card</button>
       <button class='cancelAddButton' @click="changeAddCardForm">X</button>
   </form>
-  <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"></IsCard>
+  <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"
+  ></IsCard>
 </div>
 </template>
 
@@ -45,6 +46,9 @@ export default {
     changeAddCardForm () {
       this.addCardForm = !this.addCardForm
       this.newContent = ''
+    },
+    test (cardId) {
+      console.log('my cardId in cardManager is ', cardId)
     }
   }
 

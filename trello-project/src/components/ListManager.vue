@@ -26,7 +26,10 @@
       <button class='cancelEditButton' @click="CancelEditListForm()">X</button>
     </form>
     <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
-  <CardManager :list="list" :cards="cards" @addCard="addCard" v-model="newContent" v-model:listId="listId"></CardManager>
+  <CardManager :list="list" :cards="cards"
+  @addCard="addCard" v-model="newContent" v-model:listId="listId"
+  @delete-card="deleteCard" v-model:cardId="cardId"
+  ></CardManager>
   <br>
   ======================================================
   <br>
@@ -100,7 +103,7 @@ export default {
           // console.log('in side response')
           // console.log(response)
           this.lists = [...this.lists.filter((element) => element.id !== list)]
-          this.wpapiSetting().posts().get()
+          this.wpapiSetting().posts().perPage(100).get()
             .then((cards) => {
               // console.log('my data here is ', cards)
               this.cards = cards
@@ -146,7 +149,7 @@ export default {
       }).then((response) => {
         console.log(response)
         this.cards.push(response)
-        wp.posts().get()
+        wp.posts().perPage(100).get()
           .then((cards) => {
             console.log('my data here 1 is ', cards)
             this.cards = cards
@@ -160,16 +163,32 @@ export default {
 
         // this.cards = [...]
       })
+    },
+    deleteCard (cardId) {
+      console.log('My cardId in listManager is ', cardId)
+      this.wpapiSetting().posts().id(cardId).param('force', true).delete()
+        .then((response) => {
+          console.log('in side response')
+          console.log('response is ', response)
+          this.cards = [...this.cards.filter((element) => element.id !== cardId)]
+          this.wpapiSetting().posts().perPage(100).get()
+            .then((cards) => {
+              this.cards = cards
+            })
+            .catch(function (err) {
+              console.error('posts get ', err)
+            })
+          // console.log('cards is ', this.cards)
+        })
     }
   },
+  //  ================================================================
   mounted () {
-    this.wpapiSetting().categories().get()
+    this.wpapiSetting().categories().perPage(100).get()
       .then((lists) => {
         this.lists = lists
-        // for (let i = 0; i < data.length; i++) {
-        //   this.list.id = data[i].id
-        // }
-        this.wpapiSetting().posts().get()
+        console.log('my list here 2 is ', this.lists)
+        this.wpapiSetting().posts().perPage(100).get()
           .then((cards) => {
             console.log('my data here 2 is ', cards)
             this.cards = cards

@@ -1,6 +1,8 @@
 <template>
 <div id="isCard">
     <p @click="() => TogglePopUp('buttonTrigger')" v-html="card.content.rendered"></p>
+    <button class='editConfirmButton'>Edit</button>
+    <button class='cancelEditButton' @click="this.$parent.$emit('deleteCard', cardId)">X</button>
     <PopUp
     v-if="popupTrigger.buttonTrigger"
     :TogglePopUp="() => TogglePopUp('buttonTrigger')"
@@ -32,6 +34,7 @@ export default {
   },
   data () {
     return {
+      cardId: this.card.id
     }
   }
 }
