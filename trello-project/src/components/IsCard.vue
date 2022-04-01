@@ -1,6 +1,10 @@
 <template>
 <div id="isCard">
-    <p @click="() => TogglePopUp('buttonTrigger')" v-html="card.content.rendered"></p>
+    <p @click="() => TogglePopUp('buttonTrigger')" v-if="changeContent === false" v-html="card.content.rendered"></p>
+    <input v-if="changeContent === true" v-model="updateContent">
+    <button class='editConfirmButton' v-if="changeContent === false" @click="changeContentFunction">Edit</button>
+    <button class='editConfirmButton' v-if="changeContent === true" @click="this.$parent.$emit('editCard', updateContent, cardId); changeContentFunction()">Edit</button>
+    <button class='cancelEditButton' v-if="changeContent === false" @click="this.$parent.$emit('deleteCard', cardId)">X</button>
     <PopUp
     v-if="popupTrigger.buttonTrigger"
     :TogglePopUp="() => TogglePopUp('buttonTrigger')"
@@ -32,6 +36,17 @@ export default {
   },
   data () {
     return {
+      cardId: this.card.id,
+      changeContent: false,
+      updateContent: this.card.content.rendered.replace(/<\/?[^>]+(>|$)/g, '')
+    }
+  },
+  methods: {
+    changeContentFunction () {
+      this.changeContent = !this.changeContent
+      if (this.changeContent === false) {
+        this.updateContent = this.card.content.rendered
+      }
     }
   }
 }

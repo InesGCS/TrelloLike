@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page">
 
 <ListManager>This is the first view</ListManager>
 </div>
@@ -14,3 +14,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.page {
+    background-color: antiquewhite;
+    size: 100%;
+    height: 100%;
+}
+</style>
