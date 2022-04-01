@@ -2,14 +2,13 @@
 <div class="popUp">
     <div class='popUpInner'>
         <slot />
-        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi feugiat justo justo, ut convallis urna volutpat vel. Maecenas dapibus nunc in elit facilisis convallis. Etiam sed erat facilisis, efficitur nisl. </p> -->
-        <!-- <form class="addComment" @submit.prevent='addComment'>
-        <input class='listTitle' v-model='newTitle' placeholder='Enter list title...' />
-        <button class='addButton'>Add list</button>
-        <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
-        </form> -->
-        {{card.id}}
-        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" :key="comment.id"></IsComment>
+        <button class='addCommentButton' @click="ShowAddCommentForm" v-if="addCommentForm === false">+ Add another comment</button>
+        <form class="addComment" @submit.prevent='addComment(card.id)' v-else>
+          <input class='comment' v-model='newComment' placeholder='What to say...' />
+          <button class='addButton'>Add comment</button>
+          <button class='cancelAddButton' @click="CancelAddCommentForm()">X</button>
+        </form>
+        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment>
         <button class="popUp-close" @click="TogglePopUp('buttonTrigger')">
             close
         </button>
@@ -27,7 +26,8 @@ export default {
   data: () => {
     return ({
       comments: [],
-      commentsFiltered: []
+      commentsFiltered: [],
+      addCommentForm: false
     })
   },
   methods: {
@@ -39,36 +39,49 @@ export default {
         password: 'Qwer@1226'
       })
       return wp
-    }
-  },
-  removeComment (commentId) {
-    console.log('what is this ', commentId)
-    this.wpapiSetting().categories().id(commentId).param('force', true).delete()
-      .then((response) => {
-        console.log('in side response')
-        console.log(response)
-        // this.lists = [...this.lists.filter((element) => element.id !== commentId)]
-        // this.wpapiSetting().posts().get()
-        //   .then((cards) => {
-        //     console.log('my data here is ', cards)
-        //     this.cards = cards
-        //     console.log('cards.get is ', this.cards)
-        //   })
-        //   .catch(function (err) {
-        //   // handle error
-        //     console.error('posts get ', err)
-        //   })
-        // console.log('cards is ', this.cards)
-        // // this.cards = [...this.cards]
+    },
+    ShowAddCommentForm () {
+      this.addCommentForm = true
+    },
+    CancelAddCommentForm () {
+      this.addCommentForm = false
+      this.newComment = ''
+    },
+    addComment (cardId) {
+      console.log('card id is ', cardId)
+      this.wpapiSetting().comments().create({
+        content: this.newComment,
+        post: cardId,
+        status: 'publish'
       })
+        .then((response) => {
+          // console.log(response.id)
+          this.commentsFiltered.push(response)
+        })
+      this.newComment = ''
+      this.addCommentForm = false
+    },
+    removeComment (commentId) {
+      this.wpapiSetting().comments().id(commentId).param('force', true).delete()
+        .then((response) => {
+          this.wpapiSetting().comments().get()
+            .then((comments) => {
+              // console.log('comments are ', comments)
+              this.comments = comments
+              // console.log('this comment is changed to ', this.comments)
+              // console.log('this card id is ', this.card.id)
+              this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
+            })
+        })
+    }
   },
   mounted () {
     this.wpapiSetting().comments().get()
       .then((comments) => {
-        // console.log('comments are ', comments)
+        console.log('comments are ', comments)
         this.comments = comments
-        // console.log('this comment is changed to ', this.comments)
-        // console.log('this card id is ', this.card.id)
+        console.log('this comment is changed to ', this.comments)
+        console.log('this card id is ', this.card.id)
         this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
       })
   }

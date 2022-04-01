@@ -1,7 +1,7 @@
 <template>
 <div id="isComment">
     <p v-html="comment.content.rendered"></p>
-    <button id='deleteCommentButton' @click='removeComment(comment.id)'>X</button>
+    <button id='deleteCommentButton' @click="$emit('removeComment', commentId)">X</button>
 </div>
 </template>
 
@@ -11,6 +11,7 @@ export default {
 
   data () {
     return {
+      commentId: this.comment.id
     }
   }
 }

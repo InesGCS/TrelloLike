@@ -61,8 +61,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json/',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       return wp
     },
@@ -72,6 +72,7 @@ export default {
     },
     CancelAddListForm () {
       this.addListForm = false
+      this.newTitle = ''
     },
     ShowEditListForm () {
       this.editListForm = true
@@ -93,11 +94,11 @@ export default {
       this.addListForm = false
     },
     removeList (list) {
-      console.log('what is this ', list)
+      // console.log('what is this ', list)
       this.wpapiSetting().categories().id(list).param('force', true).delete()
         .then((response) => {
-          console.log('in side response')
-          console.log(response)
+          // console.log('in side response')
+          // console.log(response)
           this.lists = [...this.lists.filter((element) => element.id !== list)]
           this.wpapiSetting().posts().get()
             .then((cards) => {
@@ -109,7 +110,7 @@ export default {
             // handle error
               console.error('posts get ', err)
             })
-          console.log('cards is ', this.cards)
+          // console.log('cards is ', this.cards)
           // this.cards = [...this.cards]
         })
     },
@@ -123,9 +124,8 @@ export default {
         name: list.name,
         status: 'publish'
       })
-              this.editListForm = false
-    }
-  },
+      this.editListForm = false
+    },
     //     .then((response) => {
     //       console.log(response)
     //     })
@@ -136,8 +136,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'hyris',
-        password: 'hyris2022'
+        username: 'LiChun',
+        password: 'Qwer@1226'
       })
       wp.posts().create({
         content: newContent,
@@ -148,7 +148,7 @@ export default {
         this.cards.push(response)
         wp.posts().get()
           .then((cards) => {
-            console.log('my data here is ', cards)
+            // console.log('my data here is ', cards)
             this.cards = cards
 
             // console.log('cards.get is ', this.cards)
@@ -162,7 +162,6 @@ export default {
       })
     }
   },
-
   mounted () {
     this.wpapiSetting().categories().get()
       .then((lists) => {
@@ -172,7 +171,7 @@ export default {
         // }
         this.wpapiSetting().posts().get()
           .then((cards) => {
-            console.log('my data here is ', cards)
+            // console.log('my data here is ', cards)
             this.cards = cards
             // console.log('cards.get is ', this.cards)
           })
