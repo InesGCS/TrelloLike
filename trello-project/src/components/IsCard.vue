@@ -3,8 +3,9 @@
     <p @click="() => TogglePopUp('buttonTrigger')" v-html="card.content.rendered"></p>
     <PopUp
     v-if="popupTrigger.buttonTrigger"
-    :TogglePopUp="() => TogglePopUp('buttonTrigger')">
-      <h1>My Popup</h1>
+    :TogglePopUp="() => TogglePopUp('buttonTrigger')"
+    :card="card">
+      <h1 v-html="card.content.rendered"></h1>
     </PopUp>
 </div>
 </template>
@@ -40,5 +41,10 @@ export default {
 <style scoped>
 #isCard {
   background-color: lemonchiffon;
+  cursor: pointer;
+}
+
+p:hover {
+  background-color: #e1e1ea;
 }
 </style>
