@@ -45,7 +45,7 @@ export default {
     changeContentFunction () {
       this.changeContent = !this.changeContent
       if (this.changeContent === false) {
-        this.updateContent = this.card.content.rendered
+        this.updateContent = this.card.content.rendered.replace(/<\/?[^>]+(>|$)/g, '')
       }
     }
   }
