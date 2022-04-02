@@ -2,9 +2,10 @@
 <div id="isCard">
     <p @click="() => TogglePopUp('buttonTrigger')" v-if="changeContent === false" v-html="card.content.rendered"></p>
     <input v-if="changeContent === true" v-model="updateContent">
-    <button class='editConfirmButton' v-if="changeContent === false" @click="changeContentFunction">Edit</button>
-    <button class='editConfirmButton' v-if="changeContent === true" @click="this.$parent.$emit('editCard', updateContent, cardId); changeContentFunction()">Edit</button>
-    <button class='cancelEditButton' v-if="changeContent === false" @click="this.$parent.$emit('deleteCard', cardId)">X</button>
+    <button class='button has-background-warning mx-2' v-if="changeContent === false" @click="changeContentFunction">Edit</button>
+    <button class='button has-background-warning mx-2' v-if="changeContent === true" @click="this.$parent.$emit('editCard', updateContent, cardId); changeContentFunction()">Edit</button>
+    <button class='button has-background-warning mx-2
+    ' v-if="changeContent === false" @click="this.$parent.$emit('deleteCard', cardId)">X</button>
     <PopUp
     v-if="popupTrigger.buttonTrigger"
     :TogglePopUp="() => TogglePopUp('buttonTrigger')"
@@ -55,8 +56,8 @@ export default {
 
 <style scoped>
 #isCard {
-  background-color: lemonchiffon;
-  cursor: pointer;
+  /* background-color: lemonchiffon; */
+  /* cursor: pointer; */
 }
 
 p:hover {

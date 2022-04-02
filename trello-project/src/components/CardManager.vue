@@ -1,14 +1,14 @@
 <template>
-<div id="cardManager">
-<h2>I'm the card Manager !</h2>
-<button class='addCardButton' v-if="addCardForm === false" @click="changeAddCardForm" >+ Add another card</button>
+<div id="cardManager" class="has-text-centered">
+  <IsCard class="box" v-for="card in cardsFiltered" :card="card" :key="card.id" />
+  <button class='button is-warning mb-4' v-if="addCardForm === false" @click="changeAddCardForm" >+ Add another card</button>
   <form v-else @submit.prevent>
-      <input class='cardContent' v-model="newContent" placeholder='Enter new content...' />
-      <button class='addCardButton' @click="$emit('addCard', newContent, listId); changeAddCardForm()">Add card</button>
-      <button class='cancelAddButton' @click="changeAddCardForm">X</button>
+      <input class='input ' v-model="newContent" placeholder='Enter new content...' />
+      <div class="is-flex is-flex-direction-row is-justify-content-space-between">
+      <button class='button is-warning' @click="$emit('addCard', newContent, listId); changeAddCardForm()">Add card</button>
+      <button class='button is-warning' @click="changeAddCardForm">X</button>
+      </div>
   </form>
-  <IsCard class="Card" v-for="card in cardsFiltered" :card="card" :key="card.id"
-  ></IsCard>
 </div>
 </template>
 
@@ -53,7 +53,10 @@ export default {
 </script>
 
 <style scoped>
-#cardManager {
-  background-color: rgb(247, 177, 169);
+/* #cardManager { */
+  /* background-color: rgb(255, 255, 255); */
+/* } */
+.box {
+    /* cursor: pointer; */
 }
 </style>

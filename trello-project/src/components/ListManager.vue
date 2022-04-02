@@ -1,38 +1,48 @@
 <template>
 <!-- <div='listManager'> -->
-  <div class='addList'>
-  <button class='addListButton' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
-  <form class="addList" @submit.prevent='addList' v-else>
-      <input class='listTitle' v-model='newTitle' placeholder='Enter list title...' />
-      <button class='addButton'>Add list</button>
-      <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
-  </form>
+  <div class='addList block has-text-centered'>
+    <h1 class="title my-5"> New Trello</h1>
   </div>
-<section class='hero'>
-  <div id="listManager" class='columns'>
-  <div
-    class='column'
-    v-for='list in lists'
-    :key='list.id'
-  >
-    <!-- <div v-click-outside="updateList(list)"> -->
-    <!-- <p class='unselectable' contenteditable
-    @input="onInput">{{ list.name }}</p> -->
-    <!-- <textarea class='unselectable' v-model="list.name"></textarea> -->
-    <p class='unselectable' @click="ShowEditListForm()" v-if="editListForm === false">{{ list.name }}</p>
-    <form @submit.prevent='updateList(list)' v-else>
-      <input class='listTitle' v-model='list.name' />
-      <button class='editConfirmButton'>Confirm</button>
-    </form>
-    <button id='deleteButton' class='unselectable' @click='removeList(list.id)'>X</button>
-  <CardManager :list="list" :cards="cards"
-  @addCard="addCard" v-model="newContent" v-model:listId="listId"
-  @delete-card="deleteCard" v-model:cardId="cardId"
-  @edit-card="editCard" v-model:updateContent="updateContent"
-  ></CardManager>
-  </div>
-  </div>
-</section>
+  <section class='hero'>
+    <div id="listManager" class='columns'>
+      <div
+        class='column is-4'
+        v-for='list in lists'
+        :key='list.id'
+      >
+        <div class="has-background-warning box">
+          <div class="columns">
+            <p class='column is-four-fifths unselectable has-text-centered is-size-4 has-text-dark' @click="ShowEditListForm()" v-if="editListForm === false">{{ list.name }}</p>
+            <form @submit.prevent='updateList(list)' v-else>
+              <input class='input is-small is-warning has-background-warning has-text-centered is-size-3 has-text-dark' v-model='list.name' />
+              <button class='button'>Confirm</button>
+            </form>
+            <div class="block mt-5">
+              <button id='deleteButton' class='button has-background-warning is-small unselectable' @click='removeList(list.id)'>
+              <img
+                class="image" width="20" min-width="10"
+                src="../assets/close.png"
+                />
+              </button>
+            </div>
+          </div>
+          <CardManager id="cardManager" :list="list" :cards="cards"
+          @addCard="addCard" v-model="newContent" v-model:listId="listId"
+          @delete-card="deleteCard" v-model:cardId="cardId"
+          @edit-card="editCard" v-model:updateContent="updateContent"
+          ></CardManager>
+        </div>
+      </div>
+      <div class='column is-3 mx-2'>
+        <button class='button' @click="ShowAddListForm()" v-if="addListForm === false">+ Add another list</button>
+        <form class="addList" @submit.prevent='addList' v-else>
+          <input class='input' v-model='newTitle' placeholder='Enter list title...' />
+          <button class='button'>Add list</button>
+          <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
+        </form>
+      </div>
+    </div>
+  </section>
 <!-- </div> -->
 </template>
 
@@ -229,14 +239,17 @@ export default {
   grid-template-rows: 1fr auto;
   height: 100vh;
 } */
-.addList {
+/* .addList {
   grid-row: 1 / 2;
-}
+} */
 #listManager {
-  grid-row: 2 / -1;
-  background-color: #99eeee;
+  /* grid-row: 2 / -1; */
+  /* background-color: #99eeee; */
   overflow-x: scroll;
+  /* width: 100%; */
+  padding: 0 10px;
 }
+/*
 .addListButton {
     width: 200px;
     font-size: 15px;
@@ -271,7 +284,7 @@ export default {
   font-size: 15px;
   background: transparent;
   border: none;
-}
+} */
 
 /* textarea {
   width: 230px;
