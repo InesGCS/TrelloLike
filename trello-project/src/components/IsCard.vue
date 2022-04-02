@@ -7,6 +7,7 @@
     :card="card">
       <h1 v-html="card.content.rendered"></h1>
     </PopUp>
+
 </div>
 </template>
 
