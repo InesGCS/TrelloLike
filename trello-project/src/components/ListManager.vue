@@ -61,7 +61,8 @@ export default {
       cards: [],
       value: '',
       newContent: '',
-      newCards: []
+      newCards: [],
+      amountComments: 0
     }
   },
   methods: {
@@ -205,6 +206,9 @@ export default {
             })
           // console.log('cards is ', this.cards)
         })
+    },
+    ShowAmountOfComments () {
+      this.amountComments = this.commentsFiltered.length
     }
   },
   //  ================================================================

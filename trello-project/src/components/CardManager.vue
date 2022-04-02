@@ -46,6 +46,10 @@ export default {
     changeAddCardForm () {
       this.addCardForm = !this.addCardForm
       this.newContent = ''
+    },
+    CountComments () {
+      const amountComments = this.comments.lengh
+      console.log(amountComments)
     }
   }
 
