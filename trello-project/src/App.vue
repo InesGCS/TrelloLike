@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="app">
 
 <ListManager>This is the first view</ListManager>
 </div>
