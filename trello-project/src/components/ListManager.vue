@@ -150,9 +150,9 @@ export default {
       console.log('my listId is ', listId)
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
-        endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'hyris',
-        password: 'hyris2022'
+        endpoint: 'http://localhost/index.php/wp-json/',
+        username: 'Tanguy',
+        password: 'ANP7qB$4CXx5SVWjo%'
       })
       wp.posts().create({
         content: newContent,
