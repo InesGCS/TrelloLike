@@ -1,6 +1,6 @@
 <template>
 <div id="isCard">
-    <p @click="() => TogglePopUp('buttonTrigger')" v-if="changeContent === false" v-html="card.content.rendered"></p>
+    <p class="hover" @click="() => TogglePopUp('buttonTrigger')" v-if="changeContent === false" v-html="card.content.rendered"></p>
     <p>({{this.commentsFiltered.length}})</p>
     <input v-if="changeContent === true" v-model="updateContent">
     <button class='button has-background-warning mx-2' v-if="changeContent === false" @click="changeContentFunction">Edit</button>
@@ -94,7 +94,7 @@ export default {
   /* background-color: lemonchiffon; */
   /* cursor: pointer; */
 }
-p:hover {
+.hover:hover {
   background-color: #e1e1ea;
 }
 </style>
