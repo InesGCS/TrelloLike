@@ -3,7 +3,7 @@
     <p @click="ShowEditCommentForm()" v-if="editCommentForm === false" v-html="comment.content.rendered"></p>
     <form v-else @submit.prevent>
       <input class='comment' v-model="newContent"/>
-      <button class='editConfirmButton' @click="$emit('updateComment', newContent, comment.id); ConfirmEditCommentForm()">Confirm</button>
+      <button class='button' @click="$emit('updateComment', newContent, comment.id); ConfirmEditCommentForm()">Confirm</button>
       <button class='button' @click="CancelEditCommentForm()">
         <img
           class="image" width="12" min-width="10"
@@ -11,13 +11,14 @@
         />
       </button>
     </form>
-    <button id='button' @click="$emit('removeComment', comment.id)">
+    <button class='button' @click="$emit('removeComment', comment.id)">
       <!-- <img
         class="image" width="12" min-width="10"
         src="../assets/close.png"
      /> -->
-     Delete
+     Delete comment
     </button>
+    <br><br>
 </div>
 </template>
 

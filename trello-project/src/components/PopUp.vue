@@ -4,10 +4,15 @@
         <slot />
         <!-- <p>({{this.commentsFiltered.length}})</p>
         {{this.$emit('name', this.commentsFiltered.length)}} -->
-        <button class='addCommentButton' @click="ShowAddCommentForm" v-if="addCommentForm === false">+ Add another comment</button>
+        <IsComment class="comment has-background-warning" v-for="comment in commentsFiltered" :comment="comment"
+        @removeComment="removeComment" v-model="commentId" @updateComment="updateComment"
+        :newContent="newContent" :key="comment.id"></IsComment>
+        <!-- <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment> -->
+        <button class='button' @click="ShowAddCommentForm" v-if="addCommentForm === false">+ Add another comment</button>
         <form class="addComment" @submit.prevent='addComment(card.id)' v-else>
-          <input class='comment' v-model='newComment' placeholder='What to say...' />
-          <button class='addButton'>Add comment</button>
+          <input class='input' v-model='newComment' placeholder='What to say...' />
+          <br>
+          <button class='button'>Add comment</button>
           <button class='button' @click="CancelAddCommentForm()">
             <img
               class="image" width="12" min-width="10"
@@ -15,11 +20,7 @@
             />
           </button>
         </form>
-        <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment"
-        @removeComment="removeComment" v-model="commentId" @updateComment="updateComment"
-        :newContent="newContent" :key="comment.id"></IsComment>
-        <!-- <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment> -->
-        <button class="popUp-close" @click="$emit('changeNumberOfComments', this.commentsFiltered.length); TogglePopUp('buttonTrigger')">
+        <button class="button" @click="$emit('changeNumberOfComments', this.commentsFiltered.length); TogglePopUp('buttonTrigger')">
             close
         </button>
     </div>
@@ -45,8 +46,8 @@ export default {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
         endpoint: 'http://localhost/wordpress/index.php/wp-json',
-        username: 'LiChun',
-        password: 'Qwer@1226'
+        username: 'hyris',
+        password: 'hyris2022'
       })
       return wp
     },
