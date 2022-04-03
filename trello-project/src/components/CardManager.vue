@@ -8,10 +8,11 @@
               <button class='button'>Confirm</button>
             </form>
               <button id='deleteButton' class='button has-background-warning is-small unselectable' @click="$emit('removeList', listId)">
-              <img
+              <!-- <img
                 class="image" width="20" min-width="10"
                 src="../assets/close.png"
-                />
+                /> -->
+                Delete
               </button>
           </div>
    <!-- ============================================================================== -->

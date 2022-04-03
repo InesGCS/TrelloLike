@@ -19,7 +19,7 @@
         @removeComment="removeComment" v-model="commentId" @updateComment="updateComment"
         :newContent="newContent" :key="comment.id"></IsComment>
         <!-- <IsComment class="comment" v-for="comment in commentsFiltered" :comment="comment" @removeComment="removeComment" v-model="commentId" :key="comment.id"></IsComment> -->
-        <button class="popUp-close" @click="TogglePopUp('buttonTrigger')">
+        <button class="popUp-close" @click="$emit('changeNumberOfComments', this.commentsFiltered.length); TogglePopUp('buttonTrigger')">
             close
         </button>
     </div>
@@ -38,7 +38,6 @@ export default {
       comments: [],
       commentsFiltered: [],
       addCommentForm: false
-      // number: this.commentsFiltered.length
     })
   },
   methods: {

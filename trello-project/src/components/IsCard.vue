@@ -7,16 +7,17 @@
     <button class='button has-background-warning mx-2' v-if="changeContent === true" @click="this.$parent.$emit('editCard', updateContent, cardId); changeContentFunction()">Edit</button>
     <button class='button has-background-warning mx-2
     ' v-if="changeContent === false" @click="this.$parent.$emit('deleteCard', cardId)">
-      <img
+      <!-- <img
         class="image" width="12" min-width="10"
         src="../assets/close.png"
-      />
+      /> -->
+      Delete
     </button>
     <PopUp
     v-if="popupTrigger.buttonTrigger"
     :TogglePopUp="() => TogglePopUp('buttonTrigger')"
     :card="card"
-    @name="GetAmountofComments">
+    @changeNumberOfComments="changeNumberOfComments" :number="this.commentsFiltered.length">
       <h1 v-html="card.content.rendered"></h1>
     </PopUp>
 
@@ -67,15 +68,19 @@ export default {
       if (this.changeContent === false) {
         this.updateContent = this.card.content.rendered.replace(/<\/?[^>]+(>|$)/g, '')
       }
+    },
+    changeNumberOfComments (number) {
+      console.log('in IsCard component in changeNumberOfComments function the number is ', number)
+      this.commentsFiltered.length = number
     }
   },
   mounted () {
     this.wpapiSetting().comments().perPage(100).get()
       .then((comments) => {
-        console.log('comments are ', comments)
+        // console.log('comments are ', comments)
         this.comments = comments
-        console.log('this comment is changed to ', this.comments)
-        console.log('this card id is ', this.card.id)
+        // console.log('this comment is changed to ', this.comments)
+        // console.log('this card id is ', this.card.id)
         this.commentsFiltered = this.comments.filter((comment) => comment.post === this.card.id)
       })
   }

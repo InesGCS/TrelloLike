@@ -12,10 +12,11 @@
       </button>
     </form>
     <button id='button' @click="$emit('removeComment', comment.id)">
-      <img
+      <!-- <img
         class="image" width="12" min-width="10"
         src="../assets/close.png"
-     />
+     /> -->
+     Delete
     </button>
 </div>
 </template>

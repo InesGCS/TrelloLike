@@ -148,20 +148,20 @@ export default {
     addCard (newContent, listId) {
       console.log('my newContent is ', newContent)
       console.log('my listId is ', listId)
-      const WPAPI = require('wpapi/superagent')
-      const wp = new WPAPI({
-        endpoint: 'http://localhost/index.php/wp-json/',
-        username: 'LiChun',
-        password: 'Qwer@1226'
-      })
-      wp.posts().create({
+      // const WPAPI = require('wpapi/superagent')
+      // const wp = new WPAPI({
+      //   endpoint: 'http://localhost/index.php/wp-json/',
+      //   username: 'LiChun',
+      //   password: 'Qwer@1226'
+      // })
+      this.wpapiSetting().posts().create({
         content: newContent,
         categories: listId,
         status: 'publish'
       }).then((response) => {
         console.log(response)
         this.cards.push(response)
-        wp.posts().perPage(100).get()
+        this.wpapiSetting().posts().perPage(100).get()
           .then((cards) => {
             console.log('my data here 1 is ', cards)
             this.cards = cards
