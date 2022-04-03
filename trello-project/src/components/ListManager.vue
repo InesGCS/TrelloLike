@@ -11,10 +11,10 @@
         :key='list.id'
       >
         <div class="has-background-warning box">
-          <div class="columns">
+          <!-- <div class="columns">
             <p class='column is-four-fifths unselectable has-text-centered is-size-4 has-text-dark' @click="ShowEditListForm()" v-if="editListForm === false">{{ list.name }}</p>
             <form @submit.prevent='updateList(list)' v-else>
-              <input class='input is-small is-warning has-background-warning has-text-centered is-size-3 has-text-dark' v-model='list.name' />
+              <input class='input is-small is-warning has-background-warning has-text-centered is-size-4 has-text-dark' v-model='list.name' />
               <button class='button'>Confirm</button>
             </form>
             <div class="block mt-5">
@@ -25,11 +25,14 @@
                 />
               </button>
             </div>
-          </div>
+          </div> -->
           <CardManager id="cardManager" :list="list" :cards="cards"
+          @ShowEditListForm="ShowEditListForm" v-model:listName="listName"
           @addCard="addCard" v-model="newContent" v-model:listId="listId"
           @delete-card="deleteCard" v-model:cardId="cardId"
           @edit-card="editCard" v-model:updateContent="updateContent"
+          @updateList="updateList"
+          @removeList="removeList"
           ></CardManager>
         </div>
       </div>
@@ -38,7 +41,12 @@
         <form class="addList" @submit.prevent='addList' v-else>
           <input class='input' v-model='newTitle' placeholder='Enter list title...' />
           <button class='button'>Add list</button>
-          <button class='cancelAddButton' @click="CancelAddListForm()">X</button>
+          <button class='button' @click="CancelAddListForm()">
+            <img
+              class="image" width="12" min-width="10"
+              src="../assets/close.png"
+            />
+          </button>
         </form>
       </div>
     </div>
@@ -54,14 +62,15 @@ export default {
   },
   data () {
     return {
-      addListForm: false,
-      editListForm: false,
+      // addListForm: false,
+      // editListForm: false,
       lists: [],
       CatId: 0,
       cards: [],
       value: '',
       newContent: '',
-      newCards: []
+      newCards: [],
+      amountComments: 0
     }
   },
   methods: {
@@ -69,23 +78,23 @@ export default {
     wpapiSetting () {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
-        endpoint: 'http://localhost/wordpress/index.php/wp-json/',
+        endpoint: 'http://localhost/wordpress/index.php/wp-json',
         username: 'hyris',
         password: 'hyris2022'
       })
       return wp
     },
     // ================== LISTS METHODS ========================
-    ShowAddListForm () {
-      this.addListForm = true
-    },
-    CancelAddListForm () {
-      this.addListForm = false
-      this.newTitle = ''
-    },
-    ShowEditListForm () {
-      this.editListForm = true
-    },
+    // ShowAddListForm () {
+    //   this.addListForm = true
+    // },
+    // CancelAddListForm () {
+    //   this.addListForm = false
+    //   this.newTitle = ''
+    // },
+    // ShowEditListForm () {
+    //   this.editListForm = true
+    // },
     addList () {
       this.wpapiSetting().categories().create({
         name: this.newTitle,
@@ -99,13 +108,13 @@ export default {
       this.newList = ''
       this.addListForm = false
     },
-    removeList (list) {
+    removeList (listId) {
       // console.log('what is this ', list)
-      this.wpapiSetting().categories().id(list).param('force', true).delete()
+      this.wpapiSetting().categories().id(listId).param('force', true).delete()
         .then((response) => {
           // console.log('in side response')
           // console.log(response)
-          this.lists = [...this.lists.filter((element) => element.id !== list)]
+          this.lists = [...this.lists.filter((element) => element.id !== listId)]
           this.wpapiSetting().posts().perPage(100).get()
             .then((cards) => {
               // console.log('my data here is ', cards)
@@ -125,12 +134,11 @@ export default {
     //   return e.target.innerText
     //   // loose focus
     // },
-    updateList (list) {
-      this.wpapiSetting().categories().id(list.id).update({
-        name: list.name,
+    updateList (listId, listName) {
+      this.wpapiSetting().categories().id(listId).update({
+        name: listName,
         status: 'publish'
       })
-      this.editListForm = false
     },
     //     .then((response) => {
     //       console.log(response)
@@ -157,14 +165,12 @@ export default {
           .then((cards) => {
             console.log('my data here 1 is ', cards)
             this.cards = cards
-
             // console.log('cards.get is ', this.cards)
           })
           .catch(function (err) {
             // handle error
             console.error('posts get ', err)
           })
-
         // this.cards = [...]
       })
     },
@@ -205,6 +211,9 @@ export default {
             })
           // console.log('cards is ', this.cards)
         })
+    },
+    ShowAmountOfComments () {
+      this.amountComments = this.commentsFiltered.length
     }
   },
   //  ================================================================
@@ -230,7 +239,6 @@ export default {
       })
   }
 }
-
 </script>
 
 <style >
@@ -255,7 +263,6 @@ export default {
     font-size: 15px;
     background: transparent;
 }
-
 .addList {
   display: grid;
   grid-template-rows: 1fr 1fr;
@@ -266,7 +273,6 @@ export default {
   gap: 5px;
   background-color: antiquewhite;
 }
-
 .listTitle {
   grid-column: 1 / -1;
   width: 95%;
@@ -274,22 +280,18 @@ export default {
   margin-left: auto;
   margin-right: auto;
 }
-
 .addButton {
   grid-column: 1 / 2;
 }
-
 .cancelAddButton {
   grid-column: 2 / 3 ;
   font-size: 15px;
   background: transparent;
   border: none;
 } */
-
 /* textarea {
   width: 230px;
   background-color: transparent;
   border: none;
 } */
-
 </style>

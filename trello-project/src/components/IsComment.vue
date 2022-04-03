@@ -4,9 +4,19 @@
     <form v-else @submit.prevent>
       <input class='comment' v-model="newContent"/>
       <button class='editConfirmButton' @click="$emit('updateComment', newContent, comment.id); ConfirmEditCommentForm()">Confirm</button>
-      <button class='cancelEditButton' @click="CancelEditCommentForm()">X</button>
+      <button class='button' @click="CancelEditCommentForm()">
+        <img
+          class="image" width="12" min-width="10"
+          src="../assets/close.png"
+        />
+      </button>
     </form>
-    <button id='deleteCommentButton' @click="$emit('removeComment', comment.id)">X</button>
+    <button id='button' @click="$emit('removeComment', comment.id)">
+      <img
+        class="image" width="12" min-width="10"
+        src="../assets/close.png"
+     />
+    </button>
 </div>
 </template>
 
