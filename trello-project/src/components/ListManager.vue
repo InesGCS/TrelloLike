@@ -62,7 +62,7 @@ export default {
   },
   data () {
     return {
-      // addListForm: false,
+      addListForm: false,
       // editListForm: false,
       lists: [],
       CatId: 0,
@@ -85,13 +85,13 @@ export default {
       return wp
     },
     // ================== LISTS METHODS ========================
-    // ShowAddListForm () {
-    //   this.addListForm = true
-    // },
-    // CancelAddListForm () {
-    //   this.addListForm = false
-    //   this.newTitle = ''
-    // },
+    ShowAddListForm () {
+      this.addListForm = true
+    },
+    CancelAddListForm () {
+      this.addListForm = false
+      this.newTitle = ''
+    },
     // ShowEditListForm () {
     //   this.editListForm = true
     // },

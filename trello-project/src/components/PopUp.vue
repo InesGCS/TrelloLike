@@ -45,7 +45,7 @@ export default {
     wpapiSetting () {
       const WPAPI = require('wpapi/superagent')
       const wp = new WPAPI({
-        endpoint: 'http://localhost/index.php/wp-json/',
+        endpoint: 'http://localhost/wordpress/index.php/wp-json',
         username: 'LiChun',
         password: 'Qwer@1226'
       })
